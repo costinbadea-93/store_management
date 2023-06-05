@@ -33,5 +33,5 @@ package.
 Request object are also validated via "hibernate-validator", so for that I designed a dto object that holds
 those validations in front of what is retrieved in service. Those are also treated in ControllerAdvice
 
-There were also unit tests written for service and for controller (junit + mock mvc). Also the scenarios are simple,
+There were also unit tests written for service and for controller (junit + mock mvc). Also the test cases are simple,
 keeping in mind that the operations in application are very simple.
