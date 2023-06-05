@@ -26,12 +26,19 @@ public class StoreManagementApplication implements CommandLineRunner {
          * in order to access endpoints
          * once the application starts
          */
-//        var user = User.builder()
-//                .username("testUser")
-//                .password(passwordEncoder.encode("test@1234"))
-//                .authority("ADMIN")
-//                .build();
-//
-//        userRepository.save(user);
+        var userAdmin = User.builder()
+                .username("testUserAdmin")
+                .password(passwordEncoder.encode("test@1234"))
+                .authority("ADMIN")
+                .build();
+
+        var userClient = User.builder()
+                .username("testUserClient")
+                .password(passwordEncoder.encode("test@1234"))
+                .authority("USER")
+                .build();
+
+//        userRepository.save(userAdmin);
+//        userRepository.save(userClient);
     }
 }

@@ -20,8 +20,5 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int productId;
     private String productName;
-    private String productPrice;
-
-    @ManyToMany(mappedBy = "products")
-    private List<Store> storeList = new ArrayList<>();
+    private double productPrice;
 }
