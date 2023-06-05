@@ -16,10 +16,17 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+/**
+ * Added tests only for two of the methods
+ * the rest are similar
+ */
 
 @WebMvcTest(StoreManagementController.class)
 public class StoreManagementControllerTest {
@@ -67,5 +74,31 @@ public class StoreManagementControllerTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.productName").value("p1"))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.productPrice").value(30));
 
+    }
+
+
+    @Test
+    @WithMockUser(username = "test", password = "test", authorities = "ADMIN")
+    public void changePriceTest() throws Exception {
+
+        var product = Product.builder()
+                .productName("p1")
+                .productPrice(40)
+                .productId(1)
+                .build();
+
+        when(storeManagementService.changeProductPrice(product.getProductName(), product.getProductPrice())).thenReturn(product);
+
+       var result =  mockMvc.perform(patch("/store/changeProductPrice")
+                .param("productName", product.getProductName())
+                .param("newPrice", "40")
+                .with(csrf())
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().is2xxSuccessful())
+               .andReturn();
+
+        var mappedResponse = objectMapper.readValue(result.getResponse().getContentAsString(), Product.class);
+        assertEquals(mappedResponse.getProductName(), product.getProductName(), "should be equals!");
+        assertEquals(mappedResponse.getProductPrice(), product.getProductPrice(), "should be equals!");
     }
 }
